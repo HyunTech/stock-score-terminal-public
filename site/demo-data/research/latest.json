@@ -1,0 +1,78 @@
+{
+  "demo": true,
+  "generatedAt": "2026-01-01T00:00:00Z",
+  "date": "2026-01-01",
+  "sourceCounts": {
+    "synthetic": 1
+  },
+  "marketSummary": "모든 종목·수치·문장은 기능 시연을 위해 만든 합성 데이터입니다. 실제 리포트나 시장 정보가 아닙니다.",
+  "issues": [
+    {
+      "title": "가상 산업 수요 예제",
+      "category": "demo",
+      "sentiment": "neutral",
+      "mentionCount": 3,
+      "relatedTickers": [
+        "DEMO01",
+        "DEMO02"
+      ],
+      "summary": "테마와 관련 종목 연결을 보여주는 창작 예문입니다."
+    }
+  ],
+  "stocks": [
+    {
+      "ticker": "DEMO01",
+      "name": "가상테크",
+      "market": "DEMO",
+      "impactScore": 50,
+      "mentions": 3,
+      "sentiment": "neutral",
+      "positiveKeywords": [],
+      "negativeKeywords": [],
+      "themes": [
+        "합성 예제"
+      ],
+      "sources": []
+    },
+    {
+      "ticker": "DEMO02",
+      "name": "가상에너지",
+      "market": "DEMO",
+      "impactScore": 50,
+      "mentions": 3,
+      "sentiment": "neutral",
+      "positiveKeywords": [],
+      "negativeKeywords": [],
+      "themes": [
+        "합성 예제"
+      ],
+      "sources": []
+    },
+    {
+      "ticker": "DEMO03",
+      "name": "가상헬스",
+      "market": "DEMO",
+      "impactScore": 50,
+      "mentions": 3,
+      "sentiment": "neutral",
+      "positiveKeywords": [],
+      "negativeKeywords": [],
+      "themes": [
+        "합성 예제"
+      ],
+      "sources": []
+    }
+  ],
+  "documents": [
+    {
+      "type": "synthetic",
+      "title": "직접 작성한 데모 문서",
+      "url": "#demo",
+      "preview": "화면 배치와 문서 요약 기능을 확인하기 위한 창작 예문입니다."
+    }
+  ],
+  "model": {
+    "description": "합성 데이터 데모",
+    "requiresOptionalEnv": []
+  }
+}

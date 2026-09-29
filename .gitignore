@@ -1,0 +1,15 @@
+/data/
+/local-output/
+/site/data/
+.env
+.env.*
+!.env.example
+*.zip
+*.pem
+*.key
+__pycache__/
+*.py[cod]
+.venv/
+logs/
+.netlify/
+.vercel/

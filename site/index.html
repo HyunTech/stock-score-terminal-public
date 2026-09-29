@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stock Score Terminal</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">합성 데이터 데모 · 실제 시세 및 투자 추천 아님</div>
+          <h1>Stock Score Terminal</h1>
+        </div>
+        <div class="status-strip">
+          <div><span id="generatedAt">-</span><small>generated</small></div>
+          <div><span id="coverage">-</span><small>coverage</small></div>
+          <div><span id="universe">-</span><small>domestic universe</small></div>
+        </div>
+      </header>
+
+      <section class="toolbar" aria-label="filters">
+        <label class="search">
+          <span>Search</span>
+          <input id="searchInput" type="search" placeholder="DEMO01, 가상테크, KOSPI..." autocomplete="off" />
+        </label>
+        <label>
+          <span>Market</span>
+          <select id="marketFilter">
+            <option value="ALL">All</option>
+          </select>
+        </label>
+        <label>
+          <span>Sort</span>
+          <select id="sortSelect">
+            <option value="score">Score</option>
+            <option value="ret12m">12M Return</option>
+            <option value="ret6m">6M Return</option>
+            <option value="stability">Stability</option>
+            <option value="liquidity">Liquidity</option>
+            <option value="drawdown">Drawdown</option>
+          </select>
+        </label>
+        <label class="range">
+          <span>Min Score <b id="minScoreLabel">0</b></span>
+          <input id="minScore" type="range" min="0" max="100" value="0" />
+        </label>
+      </section>
+
+      <section class="market-split domestic-only" aria-label="domestic top 100">
+        <article class="top-list">
+          <div class="top-list-head">
+            <div>
+              <div class="eyebrow">Domestic</div>
+              <h2>국내시장 Top 100</h2>
+            </div>
+            <span id="krTopCount">-</span>
+          </div>
+          <div class="mini-table-wrap">
+            <table class="mini-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Score</th>
+                  <th>Symbol</th>
+                  <th>Price</th>
+                  <th>3M</th>
+                  <th>12M</th>
+                </tr>
+              </thead>
+              <tbody id="krTopBody"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="research-panel" aria-label="daily research brief">
+        <div class="panel-header">
+          <div>
+            <div class="eyebrow">Research Brief</div>
+            <h2>오늘의 증권 리포트와 이슈</h2>
+            <p id="researchSummary">Loading...</p>
+          </div>
+          <div class="research-meta">
+            <span id="researchDate">-</span>
+            <small>research date</small>
+          </div>
+        </div>
+        <div class="research-grid">
+          <section>
+            <div class="research-section-head">
+              <h3>핵심 이슈</h3>
+              <span id="researchIssueCount">-</span>
+            </div>
+            <div id="researchIssues" class="issue-list"></div>
+          </section>
+          <section>
+            <div class="research-section-head">
+              <h3>언급 종목</h3>
+              <span id="researchStockCount">-</span>
+            </div>
+            <div id="researchStocks" class="research-stock-list"></div>
+          </section>
+          <section>
+            <div class="research-section-head">
+              <h3>자료</h3>
+              <span id="researchDocCount">-</span>
+            </div>
+            <div id="researchDocs" class="doc-list"></div>
+          </section>
+        </div>
+        <form id="askForm" class="ask-box">
+          <input id="askInput" type="search" placeholder="예: 오늘 리포트에서 가장 긍정적인 반도체 종목은?" autocomplete="off" />
+          <button id="askButton" type="submit">질문</button>
+        </form>
+        <div id="askAnswer" class="ask-answer">합성 예제 데이터 안에서 로컬로 답변합니다. 외부 AI API를 호출하지 않습니다.</div>
+      </section>
+
+      <section class="recommendation-panel" aria-label="stock recommendations">
+        <div class="panel-header">
+          <div>
+            <div class="eyebrow">Signal Screen</div>
+            <h2>국내 주식 종목 추천</h2>
+            <p id="recommendationMeta">Loading...</p>
+          </div>
+          <label class="recommendation-picker">
+            <span>Theme</span>
+            <select id="recommendationSelect"></select>
+          </label>
+        </div>
+        <div class="recommendation-summary">
+          <span id="recommendationCount">-</span>
+          <small>일봉 기반 기술적 조건 스크리너</small>
+        </div>
+        <div class="recommendation-table-wrap">
+          <table class="recommendation-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Signal</th>
+                <th>Symbol</th>
+                <th>Price</th>
+                <th>Setup</th>
+                <th>Trigger</th>
+                <th>Metric</th>
+                <th>Base</th>
+              </tr>
+            </thead>
+            <tbody id="recommendationBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <main class="workspace">
+        <section class="rank-panel">
+          <div class="panel-header">
+            <div>
+              <h2>Ranked Universe</h2>
+              <p id="resultCount">Loading...</p>
+            </div>
+            <div class="segmented">
+              <button class="active" data-view-size="100">Top 100</button>
+              <button data-view-size="300">Top 300</button>
+              <button data-view-size="1000">Top 1000</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Score</th>
+                  <th>Symbol</th>
+                  <th>Market</th>
+                  <th>1M</th>
+                  <th>3M</th>
+                  <th>6M</th>
+                  <th>12M</th>
+                  <th>Vol</th>
+                  <th>MDD</th>
+                  <th>Liquidity</th>
+                </tr>
+              </thead>
+              <tbody id="rankBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <aside class="detail-panel">
+          <div class="detail-head">
+            <div>
+              <div id="detailMarket" class="eyebrow">-</div>
+              <h2 id="detailSymbol">-</h2>
+              <p id="detailName">-</p>
+            </div>
+            <div class="score-dial">
+              <span id="detailScore">-</span>
+              <small>score</small>
+            </div>
+          </div>
+
+          <canvas id="sparkCanvas" width="720" height="220" aria-label="price chart"></canvas>
+
+          <div class="metric-grid">
+            <div><span id="lastClose">-</span><small>last close</small></div>
+            <div><span id="lastDate">-</span><small>last date</small></div>
+            <div><span id="rowCount">-</span><small>rows</small></div>
+            <div><span id="source">-</span><small>source</small></div>
+          </div>
+
+          <div class="component-block">
+            <h3>Components</h3>
+            <div id="componentBars"></div>
+          </div>
+
+          <div class="component-block">
+            <h3>Returns</h3>
+            <div class="return-grid">
+              <div><span id="r1m">-</span><small>1M</small></div>
+              <div><span id="r3m">-</span><small>3M</small></div>
+              <div><span id="r6m">-</span><small>6M</small></div>
+              <div><span id="r12m">-</span><small>12M</small></div>
+            </div>
+          </div>
+
+          <div class="model-box">
+            <h3>Model</h3>
+            <div id="modelWeights"></div>
+          </div>
+        </aside>
+      </main>
+    </div>
+    <script src="./app.js?v=research-no-score"></script>
+  </body>
+</html>
